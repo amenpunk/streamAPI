@@ -11,6 +11,3 @@ const {app} = require('./routes.js')
 //
 exports.API = functions.https.onRequest(app);
 
-exports.helloWorld = functions.https.onRequest((request, response) => {
-    response.send({ response : "Hello from Firebase!"});
-});
