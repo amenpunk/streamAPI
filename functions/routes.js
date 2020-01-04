@@ -49,6 +49,7 @@ app.post('/Bot', async (req, res) => {
                 }
 
             }).then(response => {
+                console.log(response)
                 const {
                     fulfillmentText,
                     intent
