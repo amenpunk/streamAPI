@@ -153,12 +153,6 @@ app.post("/AddStream", async (req, res) => {
             });
 
         if (add.id) {
-            await db
-                .collection("Platforms")
-                .doc(Mail)
-                .collection("List")
-                .doc(ID)
-                .delete();
             return res.send({
                 status: 1,
                 message: "Stream agregado",
