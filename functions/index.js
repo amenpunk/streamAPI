@@ -4,14 +4,14 @@ const express = require("express");
 admin.initializeApp(functions.config().firebase);
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const { handleError } = require("./Error");
+const { ErrorHandler, handleError } = require("./Error");
 const app = express();
 const db = admin.firestore();
-exports.db = db;
 
+exports.db = db;
+exports.ErrorHandler = ErrorHandler;
 
 const { Stream } = require("./controller");
-
 
 app.use(cors({ origin: true }));
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -20,7 +20,7 @@ app.use(bodyParser.json());
 app.use("/Stream", Stream);
 
 app.use((err, req, res, next) => {
-    console.log(err)
+    console.log(err);
     handleError(err, res);
 });
 

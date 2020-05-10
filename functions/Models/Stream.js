@@ -1,4 +1,4 @@
-const { db } = require("../index");
+const { db, ErrorHandler } = require("../index");
 
 async function SetStream(req, res) {
     try {
@@ -115,15 +115,12 @@ async function DeleteStream(req, res) {
     }
 }
 
-async function AddStream(req, res) {
-    const { Mail, apikey, URL } = req.body;
-    console.log(req.body);
+async function AddStream(req, res, next) {
+    const { Mail, URL } = req.body;
 
     try {
-        if (apikey !== Mail) {
-            return res
-                .status(401)
-                .send({ Error: "No estas autorizado para ver el contenido" });
+        if (!Mail || !URL) {
+            throw new ErrorHandler(200, "El campo es requerido");
         }
         const add = await db
             .collection("Platforms")
@@ -141,10 +138,10 @@ async function AddStream(req, res) {
                 reason: add.id
             });
         } else {
-            throw new ErrorHandler(200,"No pudimos agregar tu stream")
+            throw new ErrorHandler(200, "No pudimos agregar tu stream");
         }
     } catch (err) {
-        return next(err.message)
+        return next(err);
     }
 }
 
