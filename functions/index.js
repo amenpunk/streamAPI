@@ -11,13 +11,14 @@ const db = admin.firestore();
 exports.db = db;
 exports.ErrorHandler = ErrorHandler;
 
-const { Stream } = require("./controller");
+const { api, user } = require("./controller");
 
 app.use(cors({ origin: true }));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.use("/Stream", Stream);
+app.use("/Stream", api);
+app.use("/User", user);
 
 app.use((err, req, res, next) => {
     console.log(err);
