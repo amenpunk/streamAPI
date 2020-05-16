@@ -20,7 +20,7 @@ async function SetStream(req, res) {
 async function GetStream(req, res) {
     try {
         console.log("request start");
-        const { Mail } = req.params.Mail;
+        const { Mail } = req.body;
 
         const snap = await db
             .collection("Platforms")
@@ -67,14 +67,9 @@ async function GetStream(req, res) {
 }
 
 async function DeleteStream(req, res) {
-    const { Mail, apikey, URL } = req.body;
+    const { Mail, URL } = req.body;
     console.log(req.body);
 
-    if (apikey !== Mail) {
-        return res
-            .status(401)
-            .send({ Error: "No estas autorizado para ver el contenido" });
-    }
     try {
         const snap = await db
             .collection("Platforms")
@@ -109,7 +104,7 @@ async function DeleteStream(req, res) {
     } catch (err) {
         return res.send({
             status: 0,
-            message: "Stream no puso ser eliminaod",
+            message: "Stream no puso ser eliminado",
             reason: err.message
         });
     }

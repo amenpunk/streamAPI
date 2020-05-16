@@ -1,11 +1,9 @@
-"use strict";
 const { ErrorHandler } = require("./index.js");
+const admin = require("firebase-admin");
 
 const express = require("express");
 const StreamController = require("./Models/Stream");
 const UserController = require("./Models/Users");
-const JWT = require("jsonwebtoken");
-const SECRET = "ANIME-BITCHES";
 
 const api = express.Router();
 const user = express.Router();
@@ -14,20 +12,19 @@ const AUTH = (req, res, next) => {
     const header = req.headers["authorization"];
     try {
         const token = header.split(" ")[1];
-        return JWT.verify(token, SECRET, (err, user) => {
-            if (err) {
-                return res.status(401).send({
-                    status: 0,
-                    title: "auth problem",
-                    message: "No estas autorizado para ver este contenido"
-                });
-            }
-            req.user = user;
+        admin.auth().verifyIdToken(token).then( user => {
             console.log(user);
             return next();
-        });
+        }).catch(err => {
+            console.log(err.message)
+            return res.status(403).send({
+                status: 0,
+                title: "auth problem",
+                message: "No estas autorizado para ver este contenido"
+            });
+        })
     } catch (err) {
-        throw new ErrorHandler(200, err.message);
+        throw new ErrorHandler(403, "No estas authorizado para ver este contenido");
     }
 };
 
@@ -38,6 +35,7 @@ api.post("/Add", StreamController.AddStream);
 api.put("/Set", StreamController.SetStream);
 
 user.post("/Add", UserController.AddUser);
+user.post("/Get", UserController.GetUsers);
 
 module.exports = {
     api,
