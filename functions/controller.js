@@ -4,6 +4,7 @@ const admin = require("firebase-admin");
 const express = require("express");
 const StreamController = require("./Models/Stream");
 const UserController = require("./Models/Users");
+const ChatController = require("./Models/Chat");
 
 const api = express.Router();
 const user = express.Router();
@@ -33,6 +34,8 @@ api.post("/Get/", StreamController.GetStream);
 api.delete("/Delete", StreamController.DeleteStream);
 api.post("/Add", StreamController.AddStream);
 api.put("/Set", StreamController.SetStream);
+user.post("/Add/Message", ChatController.addMessage );
+user.post("/getMessage", ChatController.getMessage );
 
 user.post("/Add", UserController.AddUser);
 user.post("/Get", UserController.GetUsers);

@@ -1,7 +1,13 @@
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 const express = require("express");
-admin.initializeApp(functions.config().firebase);
+var serviceAccount = require("./Utils/key.json");
+
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    databaseURL: "https://firstfire-f0b06.firebaseio.com"
+});
+
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const { ErrorHandler, handleError } = require("./Error");
