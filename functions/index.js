@@ -3,9 +3,6 @@ const admin = require("firebase-admin");
 const express = require("express");
 const app = express();
 var serviceAccount = require("./Utils/key.json");
-const server = require("http").createServer(app)
-const io = require("socket.io").listen(server)
-const port = 3000
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
@@ -33,16 +30,5 @@ app.use((err, req, res, next) => {
     console.log(err);
     handleError(err, res);
 });
-
-io.on("connection", socket => {
-    socket.on("add", obj => {
-        console.log(obj)
-        io.emit('put', obj )
-    })
-    console.log("usuario conectado")
-})
-server.listen(port, () => {
-    console.log("server on port: ", port)
-})
 
 exports.API = functions.https.onRequest(app);

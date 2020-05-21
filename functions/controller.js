@@ -29,7 +29,7 @@ const AUTH = (req, res, next) => {
     }
 };
 
-api.use(AUTH);
+// api.use(AUTH);
 api.post("/Get/", StreamController.GetStream);
 api.delete("/Delete", StreamController.DeleteStream);
 api.post("/Add", StreamController.AddStream);
